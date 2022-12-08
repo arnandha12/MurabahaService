@@ -24,17 +24,19 @@ public class RetailerLogin implements JavaService2 {
 	public Object invoke(String methodId, Object[] inputArray, DataControllerRequest request, DataControllerResponse response) throws Exception {
 		Result result = new Result();
 		logger.error("Retailer Login");
-		if(preprocess(request, response)) {
+		if(preprocess(request, response)) { 
 			HashMap<String, Object> input = new HashMap<String, Object>();
 			input.put("$filter", "UserName eq " + request.getParameter("UserName"));
 			String res = DBPServiceExecutorBuilder.builder()
-							.withServiceId("DBXDBRetailerServices")
+							.withServiceId("RetailerDBService")
 							.withOperationId("dbxdb_retailer_get")
 							.withRequestParameters(input)
 							.build().getResponse();
+			logger.error("Response :: "+res);
 			JsonObject retailerResponse = new JsonParser().parse(res).getAsJsonObject();
-			if(!retailerResponse.getAsJsonArray("retailer").isJsonNull()) {
-				String password = retailerResponse.getAsJsonArray("retailer").get(0).getAsJsonObject().get("password").getAsString();
+			logger.error("Size :: "+retailerResponse.getAsJsonArray("retailer").size());
+			if(retailerResponse.getAsJsonArray("retailer").size() != 0) {
+				String password = retailerResponse.getAsJsonArray("retailer").get(0).getAsJsonObject().get("Password").getAsString();
 				if(validatePassword(password, request.getParameter("Password"))) {
 					Record securityAttrRecord = new Record();
 					securityAttrRecord.setId("security_attributes");
@@ -43,11 +45,13 @@ public class RetailerLogin implements JavaService2 {
 					securityAttrRecord.addParam(new Param("session_token", sessionToken));
 					
 					Record userAttrRecord = new Record();
-					String userId = retailerResponse.getAsJsonArray("retailer").get(0).getAsJsonObject().get("userId").getAsString();
+					String userId = retailerResponse.getAsJsonArray("retailer").get(0).getAsJsonObject().get("RetailerId").getAsString();
 					userAttrRecord.setId("user_attributes");
 					userAttrRecord.addParam(new Param("user_id", userId));
 					result.addRecord(securityAttrRecord);
 					result.addRecord(userAttrRecord);
+				} else {
+					ErrorCodeEnum.ERR_90002.setErrorCode(result);
 				}
 			} else {
 				ErrorCodeEnum.ERR_90001.setErrorCode(result);
