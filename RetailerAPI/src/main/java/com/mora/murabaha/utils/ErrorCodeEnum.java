@@ -10,7 +10,10 @@ import com.konylabs.middleware.dataobject.Record;
 public enum ErrorCodeEnum {
 	ERR_90000(90000, "Invalid parameters please give valid details."),
 	ERR_90001(90001, "No Records Found"),
-	ERR_90002(90002, "Invalid Password");
+	ERR_90002(90002, "Invalid Password"),
+	ERR_90003(90003, "Password update failed"),
+	ERR_90004(90004, "Record not inserted"),
+	ERR_90005(90005, "User already exist");
 
     public static final String ERROR_CODE_KEY = "dbpErrCode";
     public static final String ERROR_MESSAGE_KEY = "dbpErrMsg";
