@@ -43,6 +43,7 @@ public class ResetPasswordService implements JavaService2{
 				inputParam.put("Password", hashedPassword);
 				inputParam.put("TempPassword", null);
 				inputParam.put("UserId", userId);
+				inputParam.put("Status", "SID_ACTIVE");
 				String updatePassword = DBPServiceExecutorBuilder.builder()
 												.withServiceId("RetailerDBService")
 												.withOperationId("dbxdb_retailer_update")

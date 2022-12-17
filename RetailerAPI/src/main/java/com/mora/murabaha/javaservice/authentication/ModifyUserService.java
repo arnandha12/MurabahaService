@@ -34,8 +34,8 @@ public class ModifyUserService implements JavaService2 {
 			if (params.containsKey("email") && !StringUtils.isBlank(params.get("email").toString())) {
 				input.put("EmailId", params.get("email").toString());
 			}
-			if (params.containsKey("retailerid") && !StringUtils.isBlank(params.get("retailerid").toString())) {
-				input.put("RetailerId", params.get("retailerid").toString());
+			if (params.containsKey("status") && !StringUtils.isBlank(params.get("status").toString())) {
+				input.put("Status", params.get("status").toString());
 			}
 			input.put("UserId", params.get("userid").toString());
 			String dbresponse = DBPServiceExecutorBuilder.builder().withServiceId("RetailerDBService")

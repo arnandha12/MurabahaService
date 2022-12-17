@@ -13,7 +13,7 @@ public enum ErrorCodeEnum {
 	ERR_90002(90002, "Invalid Password"),
 	ERR_90003(90003, "Password update failed"),
 	ERR_90004(90004, "Record not inserted"),
-	ERR_90005(90005, "User already exist");
+	ERR_90005(90005, "UserId already exist");
 
     public static final String ERROR_CODE_KEY = "dbpErrCode";
     public static final String ERROR_MESSAGE_KEY = "dbpErrMsg";

@@ -23,7 +23,7 @@ public class GetAllUserListService implements JavaService2 {
 		Result result = new Result();
 		if(preProcess(request)) {
 			HashMap<String, Object> input = new HashMap<String, Object>();
-			input.put("$filter", "retailerid eq " + request.getParameter("retailerid"));
+			input.put("$filter", "RetailerId eq " + request.getParameter("retailerid"));
 			String res = DBPServiceExecutorBuilder.builder()
 							.withServiceId("RetailerDBService")
 							.withOperationId("dbxdb_retailer_get")
@@ -38,10 +38,9 @@ public class GetAllUserListService implements JavaService2 {
 
 	private boolean preProcess(DataControllerRequest request) {
 		boolean status = true;
-		String userid = "",retailerid = "";
-		userid = request.getParameter("userid");
+		String retailerid = "";
 		retailerid = request.getParameter("retailerid");
-		if (StringUtils.isBlank(userid) || StringUtils.isBlank(retailerid)) {
+		if (StringUtils.isBlank(retailerid)) {
 			status = false;
 		}
 		return status;

@@ -41,12 +41,14 @@ public class CreateUserService implements JavaService2{
 				HashMap<String, Object> params = (HashMap<String, Object>)inputArray[1];
 				HashMap<String, Object> input = new HashMap<String, Object>();
 				input.put("UserId", params.get("userid"));
-				input.put("UserName", params.get("retailername"));
+				input.put("UserName", params.get("username"));
+				input.put("RetailerName", params.get("retailername"));
 				input.put("Role", params.get("role"));
 				input.put("PhoneNo", params.get("phonenumber"));
 				input.put("EmailId", params.get("email"));
 				input.put("RetailerId", params.get("retailerid"));
 				input.put("TempPassword", generateActivationCode());
+				input.put("Status", "SID_CUS_NEW");
 				String dbresponse = DBPServiceExecutorBuilder.builder()
 									.withServiceId("RetailerDBService")
 									.withOperationId("dbxdb_retailer_create")
@@ -70,7 +72,7 @@ public class CreateUserService implements JavaService2{
 	private boolean preprocess(DataControllerRequest request, DataControllerResponse response) {
 		boolean status = true;
 		String username = "",role = "", phonenumber = "", email = "", userid = "";
-		username = request.getParameter("username");
+		username = request.getParameter("retailername");
 		role = request.getParameter("role");
 		phonenumber = request.getParameter("phonenumber");
 		email = request.getParameter("email");
