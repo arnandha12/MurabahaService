@@ -76,14 +76,16 @@ public class RequestOTP implements JavaService2{
         HashMap<String, Object> inputParams = new HashMap<String, Object>();
 		inputParams.put("$filter", filter);
 		//result = HelperMethods.callGetApi((DataControllerRequest)dcRequest, (String)filter, (Map)HelperMethods.getHeaders((DataControllerRequest)dcRequest), (String)"OTP.readRecord");
-		try {
-			result = DBPServiceExecutorBuilder.builder()
-					.withServiceId("RetailerDBService")
-					.withOperationId("dbxdb_OTP_get")
-					.withRequestParameters(inputParams)
-					.build().getResult();
-		} catch (DBPApplicationException e) {
-			e.printStackTrace();
+		if(StringUtils.isNotBlank(filter)) {
+			try {
+				result = DBPServiceExecutorBuilder.builder()
+						.withServiceId("RetailerDBService")
+						.withOperationId("dbxdb_OTP_get")
+						.withRequestParameters(inputParams)
+						.build().getResult();
+			} catch (DBPApplicationException e) {
+				e.printStackTrace();
+			}
 		}
         return result;
     }
@@ -116,7 +118,7 @@ public class RequestOTP implements JavaService2{
         inputParams.put("NumberOfRetries", "" + (retryCount + 1));
         inputParams.put("createdts", HelperMethods.getCurrentTimeStamp());
         
-        String url = "	dbxdb_OTP_create";
+        String url = "dbxdb_OTP_create";
         if (StringUtils.isBlank((CharSequence)securityKey) || retryCount == -1) {
             securityKey = HelperMethods.getNewId();
             inputParams.put("serviceKey", serviceKey);

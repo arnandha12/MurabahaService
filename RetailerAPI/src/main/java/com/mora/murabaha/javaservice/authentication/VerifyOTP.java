@@ -58,6 +58,7 @@ public class VerifyOTP implements JavaService2{
 		} else {
 			ErrorCodeEnum.ERR_90007.setErrorCode(result);
 		}
+		result.removeDatasetById("OTP");
 		return result;
 	}
 }
