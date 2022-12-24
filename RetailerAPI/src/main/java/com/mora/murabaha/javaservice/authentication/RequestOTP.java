@@ -31,6 +31,7 @@ public class RequestOTP implements JavaService2{
             ErrorCodeEnum.ERR_90006.setErrorCode(result);
             return result;
         }
+		String phone = request.getParameter("Phone");
 		int invalidAttempt = 0,retryCount = 0;
 		Result Otpresult = this.getOTPResult(request);
 		String securityKey = null;
@@ -52,6 +53,23 @@ public class RequestOTP implements JavaService2{
         securityKey = HelperMethods.getParamValue((Param)otpresult.getParamByName("securityKey"));
         result.addParam(new Param("securityKey", securityKey, "string"));
         result.addParam(new Param("invalidAttempt", invalidAttempt+"", "String"));
+        if(StringUtils.isNotBlank(otp) && StringUtils.isNotBlank(phone)) {
+        	HashMap<String,Object> sendSMSRequest = new HashMap<String, Object>();
+        	sendSMSRequest.put("AppSid", "5LSk7BMeHH39VvwRA3TBr0BbdORaMN");
+        	sendSMSRequest.put("Body", otp);
+        	sendSMSRequest.put("Recipient", phone);
+        	sendSMSRequest.put("SenderID", "IJARAH");
+        	sendSMSRequest.put("responseType", "JSON");
+        	sendSMSRequest.put("statusCallback", "sent");
+        	sendSMSRequest.put("baseEncode", "true");
+        	sendSMSRequest.put("async", "false");
+        	Result smsresult = DBPServiceExecutorBuilder.builder()
+					.withServiceId("UniphonicRestAPI")
+					.withOperationId("SendMessage")
+					.withRequestParameters(sendSMSRequest)
+					.build().getResult();
+        	logger.error(ResultToJSON.convert(smsresult));
+        }
 		return result;
 	}
 
