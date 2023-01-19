@@ -58,6 +58,11 @@
 		<groupId>commons-lang</groupId>
 		<artifactId>commons-lang</artifactId>
 		<version>${apache.commonslang.version}</version>
+	</dependency>
+	<dependency>
+		<groupId>com.kony.dbp</groupId>
+		<artifactId>dbp-commonutilityservices</artifactId>
+		<version>${project.version}</version>
 	</dependency>	
   </dependencies>
   

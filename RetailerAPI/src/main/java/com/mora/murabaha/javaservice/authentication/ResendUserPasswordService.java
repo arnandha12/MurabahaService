@@ -5,6 +5,7 @@ import java.util.HashMap;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.dbp.core.error.DBPApplicationException;
 import com.dbp.core.fabric.extn.DBPServiceExecutorBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -12,6 +13,7 @@ import com.konylabs.middleware.common.JavaService2;
 import com.konylabs.middleware.controller.DataControllerRequest;
 import com.konylabs.middleware.controller.DataControllerResponse;
 import com.konylabs.middleware.dataobject.Result;
+import com.konylabs.middleware.dataobject.ResultToJSON;
 import com.mora.murabaha.utils.ErrorCodeEnum;
 import com.temenos.infinity.api.commons.encrypt.BCrypt;
 
@@ -35,6 +37,7 @@ public class ResendUserPasswordService implements JavaService2{
 			logger.error("Size :: "+retailerResponse.getAsJsonArray("retailer").size());
 			if(retailerResponse.getAsJsonArray("retailer").size() != 0) {
 				String userId = retailerResponse.getAsJsonArray("retailer").get(0).getAsJsonObject().get("UserId").getAsString();
+				String phoneno = retailerResponse.getAsJsonArray("retailer").get(0).getAsJsonObject().get("PhoneNo").getAsString(); 
 				String password = request.getParameter("resetpassword");
 				String salt = BCrypt.gensalt((int)11);
 		        String hashedPassword = BCrypt.hashpw((String)password, (String)salt);
@@ -53,6 +56,8 @@ public class ResendUserPasswordService implements JavaService2{
 				logger.error("retailerPwdUpdateResponse :: "+retailerPwdUpdateResponse);
 				if(retailerPwdUpdateResponse.getAsJsonArray("retailer").size() != 0) {
 					result.addParam("status", "sucess");
+					result.addParam("password",password);
+					sendUserIdPassword(request, password, userId, phoneno);
 				} else {
 					ErrorCodeEnum.ERR_90003.setErrorCode(result);
 				}
@@ -73,6 +78,26 @@ public class ResendUserPasswordService implements JavaService2{
 			return false;
 		}
 		return status;
+	}
+	
+	private void sendUserIdPassword(DataControllerRequest request,String Password, String userId,String phoneno) throws DBPApplicationException {
+		String content = "User ID :: "+userId+" Password :: "+Password;
+		logger.error("content :: "+content);
+		HashMap<String,Object> sendSMSRequest = new HashMap<String, Object>();
+    	sendSMSRequest.put("AppSid", "5LSk7BMeHH39VvwRA3TBr0BbdORaMN");
+    	sendSMSRequest.put("Body", content);
+    	sendSMSRequest.put("Recipient", phoneno);
+    	sendSMSRequest.put("SenderID", "IJARAH");
+    	sendSMSRequest.put("responseType", "JSON");
+    	sendSMSRequest.put("statusCallback", "sent");
+    	sendSMSRequest.put("baseEncode", "true");
+    	sendSMSRequest.put("async", "false");
+    	Result smsresult = DBPServiceExecutorBuilder.builder()
+				.withServiceId("UniphonicRestAPI")
+				.withOperationId("SendMessage")
+				.withRequestParameters(sendSMSRequest)
+				.build().getResult();
+    	logger.error(ResultToJSON.convert(smsresult));
 	}
 
 }
