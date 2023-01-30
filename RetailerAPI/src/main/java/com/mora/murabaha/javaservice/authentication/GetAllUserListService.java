@@ -23,7 +23,12 @@ public class GetAllUserListService implements JavaService2 {
 		Result result = new Result();
 		if(preProcess(request)) {
 			HashMap<String, Object> input = new HashMap<String, Object>();
-			input.put("$filter", "RetailerId eq " + request.getParameter("retailerid"));
+			String retailerId = request.getParameter("retailerid");
+			logger.error("retailerId :: "+retailerId);
+			if(StringUtils.isNotEmpty(retailerId)) {
+				input.put("$filter", "RetailerId eq " + request.getParameter("retailerid"));
+			}
+			logger.error("input :: "+input.entrySet());
 			String res = DBPServiceExecutorBuilder.builder()
 							.withServiceId("RetailerDBService")
 							.withOperationId("dbxdb_retailer_get")

@@ -49,7 +49,7 @@ public class CreateUserService implements JavaService2{
 				input.put("UserName", params.get("username"));
 				input.put("RetailerName", params.get("retailername"));
 				input.put("Role", params.get("role"));
-				input.put("PhoneNo", params.get("phonenumber"));
+				input.put("PhoneNo", "966"+params.get("phonenumber"));
 				input.put("EmailId", params.get("email"));
 				input.put("RetailerId", params.get("retailerid"));
 				String password = generateActivationCode();
@@ -157,14 +157,15 @@ public class CreateUserService implements JavaService2{
 		HashMap<String,Object> sendSMSRequest = new HashMap<String, Object>();
     	sendSMSRequest.put("AppSid", "5LSk7BMeHH39VvwRA3TBr0BbdORaMN");
     	sendSMSRequest.put("Body", content);
-    	sendSMSRequest.put("Recipient", request.getParameter("phonenumber"));
+    	sendSMSRequest.put("Phone", "966"+request.getParameter("phonenumber"));
+    	sendSMSRequest.put("Recipient", "966"+request.getParameter("phonenumber"));
     	sendSMSRequest.put("SenderID", "IJARAH");
     	sendSMSRequest.put("responseType", "JSON");
     	sendSMSRequest.put("statusCallback", "sent");
     	sendSMSRequest.put("baseEncode", "true");
     	sendSMSRequest.put("async", "false");
     	Result smsresult = DBPServiceExecutorBuilder.builder()
-				.withServiceId("UniphonicRestAPI")
+				.withServiceId("UniphonicRestAPIMurabaha")
 				.withOperationId("SendMessage")
 				.withRequestParameters(sendSMSRequest)
 				.build().getResult();

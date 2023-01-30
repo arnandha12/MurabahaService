@@ -64,7 +64,7 @@ public class RequestOTP implements JavaService2{
         	sendSMSRequest.put("baseEncode", "true");
         	sendSMSRequest.put("async", "false");
         	Result smsresult = DBPServiceExecutorBuilder.builder()
-					.withServiceId("UniphonicRestAPI")
+					.withServiceId("UniphonicRestAPIMurabaha")
 					.withOperationId("SendMessage")
 					.withRequestParameters(sendSMSRequest)
 					.build().getResult();
