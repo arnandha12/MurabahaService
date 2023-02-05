@@ -84,9 +84,9 @@ public class ResendUserPasswordService implements JavaService2{
 		String content = "User ID :: "+userId+" Password :: "+Password;
 		logger.error("content :: "+content);
 		HashMap<String,Object> sendSMSRequest = new HashMap<String, Object>();
-    	sendSMSRequest.put("AppSid", "5LSk7BMeHH39VvwRA3TBr0BbdORaMN");
+    	sendSMSRequest.put("AppSid", "bktEQ5ar7zRAUWInYhzirKN0DUTVKL");
     	sendSMSRequest.put("Body", content);
-    	sendSMSRequest.put("Recipient", phoneno);
+    	sendSMSRequest.put("Recipient", "966"+phoneno);
     	sendSMSRequest.put("SenderID", "IJARAH");
     	sendSMSRequest.put("responseType", "JSON");
     	sendSMSRequest.put("statusCallback", "sent");

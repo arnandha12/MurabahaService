@@ -1,8 +1,10 @@
 package com.mora.murabaha.javaservice.authentication;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.entity.ContentType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -12,10 +14,12 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.kony.dbputilities.util.HelperMethods;
 import com.konylabs.middleware.common.JavaService2;
 import com.konylabs.middleware.controller.DataControllerRequest;
 import com.konylabs.middleware.controller.DataControllerResponse;
 import com.konylabs.middleware.dataobject.JSONToResult;
+import com.konylabs.middleware.dataobject.Param;
 import com.konylabs.middleware.dataobject.Result;
 import com.konylabs.middleware.dataobject.ResultToJSON;
 import com.mora.murabaha.utils.ErrorCodeEnum;
@@ -49,7 +53,7 @@ public class CreateUserService implements JavaService2{
 				input.put("UserName", params.get("username"));
 				input.put("RetailerName", params.get("retailername"));
 				input.put("Role", params.get("role"));
-				input.put("PhoneNo", "966"+params.get("phonenumber"));
+				input.put("PhoneNo", params.get("phonenumber"));
 				input.put("EmailId", params.get("email"));
 				input.put("RetailerId", params.get("retailerid"));
 				String password = generateActivationCode();
@@ -155,7 +159,7 @@ public class CreateUserService implements JavaService2{
 		String content = "User ID :: "+userId+" Password :: "+Password;
 		logger.error("content :: "+content);
 		HashMap<String,Object> sendSMSRequest = new HashMap<String, Object>();
-    	sendSMSRequest.put("AppSid", "5LSk7BMeHH39VvwRA3TBr0BbdORaMN");
+    	sendSMSRequest.put("AppSid", "bktEQ5ar7zRAUWInYhzirKN0DUTVKL");
     	sendSMSRequest.put("Body", content);
     	sendSMSRequest.put("Phone", "966"+request.getParameter("phonenumber"));
     	sendSMSRequest.put("Recipient", "966"+request.getParameter("phonenumber"));
@@ -164,11 +168,33 @@ public class CreateUserService implements JavaService2{
     	sendSMSRequest.put("statusCallback", "sent");
     	sendSMSRequest.put("baseEncode", "true");
     	sendSMSRequest.put("async", "false");
+    	sendSMSRequest.put("CorrelationID", "242343424234");
+    	
+    	logger.error("Input param :: "+sendSMSRequest.entrySet());
     	Result smsresult = DBPServiceExecutorBuilder.builder()
 				.withServiceId("UniphonicRestAPIMurabaha")
 				.withOperationId("SendMessage")
 				.withRequestParameters(sendSMSRequest)
 				.build().getResult();
-    	logger.error(ResultToJSON.convert(smsresult));
-	}
+    	logger.error("smsresult :: "+ResultToJSON.convert(smsresult));
+	
+    	String email = request.getParameter("email");
+    	logger.error("Input param :: email "+email);
+        if (StringUtils.isNotBlank((CharSequence)content) && StringUtils.isNotBlank((CharSequence)email)) {
+        	Map headers = HelperMethods.getHeaders((DataControllerRequest)request);
+        	HashMap<String, String> input = new HashMap();
+            input.put("Subscribe", "true");
+            input.put("FirstName", "firstName");
+            input.put("LastName", "lastName");
+            String emailContent = content;
+            input.put("emailBody", emailContent);
+            input.put("emailSubject", "Ijarah");
+            if (StringUtils.isNotBlank((CharSequence)emailContent)) {
+                input.put("Email", request.getParameter("email"));
+                headers = HelperMethods.getHeaders((DataControllerRequest)request);
+                headers.put("Content-Type", ContentType.APPLICATION_JSON.getMimeType());
+                HelperMethods.callApiAsync((DataControllerRequest)request, input, (Map)headers, (String)"KMS.sendEmailOrch");
+            }
+        }        
+	}	
 }

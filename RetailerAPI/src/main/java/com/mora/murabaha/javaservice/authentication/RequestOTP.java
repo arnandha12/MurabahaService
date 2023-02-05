@@ -55,9 +55,9 @@ public class RequestOTP implements JavaService2{
         result.addParam(new Param("invalidAttempt", invalidAttempt+"", "String"));
         if(StringUtils.isNotBlank(otp) && StringUtils.isNotBlank(phone)) {
         	HashMap<String,Object> sendSMSRequest = new HashMap<String, Object>();
-        	sendSMSRequest.put("AppSid", "5LSk7BMeHH39VvwRA3TBr0BbdORaMN");
+        	sendSMSRequest.put("AppSid", "bktEQ5ar7zRAUWInYhzirKN0DUTVKL");
         	sendSMSRequest.put("Body", otp);
-        	sendSMSRequest.put("Recipient", phone);
+        	sendSMSRequest.put("Recipient", "966"+phone);
         	sendSMSRequest.put("SenderID", "IJARAH");
         	sendSMSRequest.put("responseType", "JSON");
         	sendSMSRequest.put("statusCallback", "sent");
