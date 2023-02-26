@@ -60,11 +60,13 @@ public class RequestOTP implements JavaService2{
         	sendSMSRequest.put("AppSid", "bktEQ5ar7zRAUWInYhzirKN0DUTVKL");
         	sendSMSRequest.put("Body", otp);
         	sendSMSRequest.put("Recipient", phone);
-        	sendSMSRequest.put("SenderID", "IJARAH");
+        	sendSMSRequest.put("SenderID", "MORAFinance");
         	sendSMSRequest.put("responseType", "JSON");
         	sendSMSRequest.put("statusCallback", "sent");
         	sendSMSRequest.put("baseEncode", "true");
         	sendSMSRequest.put("async", "false");
+        	sendSMSRequest.put("CorrelationID", "242343424234");
+        	
         	Result smsresult = DBPServiceExecutorBuilder.builder()
 					.withServiceId("UniphonicRestAPIMurabaha")
 					.withOperationId("SendMessage")

@@ -163,7 +163,7 @@ public class CreateUserService implements JavaService2{
     	sendSMSRequest.put("Body", content);
     	sendSMSRequest.put("Phone", "966"+request.getParameter("phonenumber"));
     	sendSMSRequest.put("Recipient", "966"+request.getParameter("phonenumber"));
-    	sendSMSRequest.put("SenderID", "IJARAH");
+    	sendSMSRequest.put("SenderID", "MORAFinance");
     	sendSMSRequest.put("responseType", "JSON");
     	sendSMSRequest.put("statusCallback", "sent");
     	sendSMSRequest.put("baseEncode", "true");
