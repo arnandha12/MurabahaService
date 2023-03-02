@@ -159,7 +159,7 @@ public class CreateUserService implements JavaService2{
 		String content = "User ID :: "+userId+" Password :: "+Password;
 		logger.error("content :: "+content);
 		HashMap<String,Object> sendSMSRequest = new HashMap<String, Object>();
-    	sendSMSRequest.put("AppSid", "bktEQ5ar7zRAUWInYhzirKN0DUTVKL");
+    	sendSMSRequest.put("AppSid", "o6oNEqvPNkLrc6gJtYalHwKXtgVgq7");
     	sendSMSRequest.put("Body", content);
     	sendSMSRequest.put("Phone", "966"+request.getParameter("phonenumber"));
     	sendSMSRequest.put("Recipient", "966"+request.getParameter("phonenumber"));
